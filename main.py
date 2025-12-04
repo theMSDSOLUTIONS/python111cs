@@ -6,4 +6,4 @@
 import platform
 print(f"Hello Python v{platform.python_version()}!")
 
-print("HAlA nigga")
+print("HAlA Without N words.")
