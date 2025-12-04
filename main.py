@@ -6,4 +6,4 @@
 import platform
 print(f"Hello Python v{platform.python_version()}!")
 
-print("HAlA SHABAB")
+print("HAlA nigga")
