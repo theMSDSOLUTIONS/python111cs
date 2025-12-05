@@ -15,8 +15,6 @@ We will help you in:
 [3] Buying snacks to eat while watching.
 """)
 
-movie = input("Choose your movie: ")
-
 def showing_the_hall():
     last_row_string = " ".join(seats[-1]) 
     max_width = len(last_row_string)
@@ -31,29 +29,45 @@ def showing_the_hall():
         print(row_string.center(max_width))
     print('')
 
+list_of_chairs = []
 
-number_of_people = int(input('How many seats would you like to book: '))
-creating_seats_list()
+def collecting_seats():
+    chair = 0
+    total_price = 0
 
-showing_the_hall()
+    number_of_people = int(input('How many seats would you like to book: '))
 
-for chair in range(number_of_people):
-    choice = input("Please enter the desired seat: ")
+    while chair < number_of_people:
+        choice = input("Please enter the desired seat: ")
 
-    for row in range(7):
-        if choice in seats[row]:
+        for row in range(7):
+            if choice in seats[row]:
 
-            seat_index = seats[row].index(choice)
+                seat_index = seats[row].index(choice)
+                total_price += 10 * (7 - row)
+                list_of_chairs.append(seats[row][seat_index])
+                seats[row][seat_index] = 'XX'
 
-            seats[row][seat_index] = 'XX'
+                chair += 1
+                break
+        else:
+            print('Invalid choice! Please try again: ')
+        print(f"The current total is : {total_price}")
 
-            break
-    else:
-        print('Invalid choice!')
+        showing_the_hall()
+
+def main():
+
+    greeting_message()
+
+    movie = input("Choose your movie: ")
+
+    creating_seats_list()
 
     showing_the_hall()
-    
 
-    
+    collecting_seats()
 
+    print(f'You have booked these chairs: {' '.join(list_of_chairs)}')
 
+main()
