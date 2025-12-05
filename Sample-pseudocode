@@ -1,0 +1,89 @@
+FUNCTION show_welcome:
+    DISPLAY welcome banner
+    WAIT for user to press ENTER
+
+FUNCTION creating_seats_list:
+    CREATE global list "seats"
+    FOR each row index i from 0 to 6:
+        ADD an empty list inside seats
+        FOR each seat index j from 0 to i+6:
+            CREATE seat name as: (Letter A + row index) + (seat number j+1)
+            ADD seat name to seats[i]
+
+FUNCTION showing_the_hall:
+    GET maximum row width from last row
+    PRINT screen header graphics
+    seats_prices = [150, 120, 90, 70, 50, 40, 30]
+    FOR each row in seats:
+        JOIN seats in this row into row_string
+        PRINT row_string centered with seat price for that row
+    PRINT hall footer
+
+FUNCTION collecting_user_data:
+    DISPLAY instructions about seat selection
+    ASK user for name → save as global "the_user_name"
+    ASK user how many seats they want → save as global "number_of_people"
+    WHILE number_of_people is not a valid number:
+        ASK again for a valid whole number
+    CONVERT number_of_people to integer
+
+FUNCTION collecting_seats_data:
+    INITIALIZE list_of_chairs = empty list (global)
+    INITIALIZE total_price = 0 (global)
+    SET chair = 0
+    seats_prices = [150, 120, 90, 70, 50, 40, 30]
+
+    WHILE chair < number_of_people:
+        ASK user to enter desired seat code → uppercase
+        FOR each row index:
+            IF seat exists in that row:
+                GET the seat index
+                ADD row price to total_price
+                ADD selected seat to list_of_chairs
+                MARK seat in seats as "XX" (reserved)
+                INCREASE chair count by 1
+                STOP searching for this input
+        IF seat not found in any row:
+            SHOW "Invalid choice" message
+
+        SHOW updated hall
+        SHOW current total price
+
+FUNCTION handeling_users_data:
+    SAVE user data into users_information dictionary:
+        key = user name
+        value = [list_of_chairs, total_price]
+
+    IF multiple_users == "no":
+        DISPLAY summary of all users:
+            PRINT table header
+            FOR every user stored in users_information:
+                PRINT username, seats booked and cost
+
+FUNCTION showing_final_details:
+    PRINT confirmation details:
+        Show booked seats list
+        Show total payment amount
+        Thank user
+
+FUNCTION main:
+    CALL creating_seats_list
+    CREATE global dictionary users_information
+
+    LOOP forever:
+        CALL show_welcome
+        CALL showing_the_hall
+        CALL collecting_user_data
+        CALL collecting_seats_data
+        CALL showing_final_details
+
+        ASK if another reservation is needed → store in global multiple_users
+        WHILE answer not Yes or No:
+            ASK again until valid
+
+        CALL handeling_users_data
+
+        IF answer was No:
+            EXIT loop
+
+CALL main to start the program
