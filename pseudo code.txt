@@ -1,0 +1,46 @@
+START
+SET seats = list
+FOR each row index i from 0 to 6:
+    ADD an empty list inside seats
+    FOR each seat index j from 0 to i+6:
+        CREATE seat name as: ((Letter A + row index) in ASCII) + (seat number j+1)
+        ADD seat name to seats[i]
+CREATE dictionary users_information
+WHILE True:
+    PRINT welcome banner
+    WAIT for user to press ENTER
+    GET maximum row width from last seats row
+    PRINT screen header graphics
+    SET seats_prices = [150, 120, 90, 70, 50, 40, 30]
+    FOR each row in seats:
+        JOIN seats in this row into row_string
+        PRINT row_string centered with seat price for that row
+    PRINT hall footer
+    PRINT instructions about seat selection
+    READ the_user_name
+    READ number_of_people
+    WHILE number_of_people is not a valid number:
+        READ number_of_people again for a valid whole number
+    SET list_of_chairs = empty list
+    SET total_price = 0 
+    SET chair = 0
+    seats_prices = [150, 120, 90, 70, 50, 40, 30]
+    WHILE chair < number_of_people:
+        READ choice
+	SET choice to uppercase
+        FOR each row from 0 to 6:
+            IF choice in row of seats:
+                GET the seat index
+                ADD row price to total_price
+                ADD selected seat to list_of_chairs
+                MARK seat in seats as "XX" (reserved)
+                INCREASE chair count by 1
+                BREAK
+        IF seat not found in any row:
+            PRINT "Invalid choice! Try again."
+
+        PRINT updated hall
+        PRINT current total price
+    PRINT list_of_chairs
+    PRINT total_price
+    
