@@ -1,46 +1,62 @@
 START
-SET seats = list
-FOR each row index i from 0 to 6:
-    ADD an empty list inside seats
-    FOR each seat index j from 0 to i+6:
-        CREATE seat name as: ((Letter A + row index) in ASCII) + (seat number j+1)
-        ADD seat name to seats[i]
-CREATE dictionary users_information
-WHILE True:
+SET seats = empty list
+FOR i from 0 to 6 DO
+    seats[i] = empty list
+    FOR j from 0 to i+6:
+        SET seat_name as: ((65 + row index) in ASCII) + (seat number j+1)
+        ADD seat_name to seats[i]
+ENDFOR
+SET users_information = empty dictionary
+WHILE True DO
     PRINT welcome banner
-    GET maximum row width from last seats row
+    SET last_row_string = row width from the last seats row
     PRINT screen header graphics
     SET seats_prices = [150, 120, 90, 70, 50, 40, 30]
-    FOR each row in seats:
-        JOIN seats in this row into row_string
+    FOR each row in seats DO
+        JOIN seats in row into row_string separated by whitespace
         PRINT row_string centered with seat price for that row
+    ENDFOR
     PRINT hall footer
     PRINT instructions about seat selection
     READ the_user_name
     READ number_of_people
     WHILE number_of_people is not a valid number:
         READ number_of_people again for a valid whole number
+    ENDWHILE
     SET list_of_chairs = empty list
     SET total_price = 0 
     SET chair = 0
-    seats_prices = [150, 120, 90, 70, 50, 40, 30]
-    WHILE chair < number_of_people:
+    WHILE chair < number_of_people DO
+        SET seats_prices = [150, 120, 90, 70, 50, 40, 30]
         READ choice
-	SET choice to uppercase
-        FOR each row from 0 to 6:
-            IF choice in row of seats:
-                GET the seat index
-                ADD row price to total_price
+        FOR row from 0 to 6 DO
+            IF choice in seats[row] THEN
+                SET seat_index = index of choice in seats[row]
+                total_price = total_price + seats_prices[row]
                 ADD selected seat to list_of_chairs
-                MARK seat in seats as "XX" (reserved)
-                INCREASE chair count by 1
+                SET seat in seats as "XX" (reserved)
+                chair = chair + 1
                 BREAK
-        IF seat not found in any row:
+            ENDIF
+        ENDFOR
+        IF choice not found in any row THEN
             PRINT "Invalid choice! Try again."
-
+        ENDIF
         PRINT updated hall
-        PRINT current total price
+        PRINT current total_price
+    ENDWHILE
     PRINT list_of_chairs
     PRINT total_price
-    
-
+    READ multiple_users
+    WHILE mutliple_users not "Yes" or "No" DO
+        READ multiple_users again until valid
+    ENDWHILE
+    SAVE list_of_chairs and total_price for the_user_name in users_information
+    IF multiple_users is "No" THEN
+        FOR every user stored in users_information:
+                PRINT username, seats booked and cost
+        ENDFOR
+        BREAK from WHILE loop
+    ELSE
+        CONTINUE to next iteration
+STOP
